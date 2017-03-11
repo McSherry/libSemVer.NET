@@ -1,69 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8C0FD5FE-7C51-45C7-A6B6-7D73FA74588F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>McSherry.SemanticVersioning</RootNamespace>
-    <AssemblyName>McSherry.SemanticVersioning</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\McSherry.SemanticVersioning.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DebugSymbols>true</DebugSymbols>
-    <DocumentationFile>bin\Release\McSherry.SemanticVersioning.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Helper.cs" />
-    <Compile Include="Internals\PseudoBigInt.cs" />
-    <Compile Include="Monotonic\MonotonicComparer.cs" />
-    <Compile Include="Monotonic\MonotonicExtensions.cs" />
-    <Compile Include="Monotonic\MonotonicVersioner.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ranges\VersionRange.Comparison.cs" />
-    <Compile Include="Ranges\VersionRange.cs" />
-    <Compile Include="Ranges\VersionRange.Parsing.cs" />
-    <Compile Include="SemanticVersion.cs" />
-    <Compile Include="SemanticVersion.Formatting.cs" />
-    <Compile Include="SemanticVersion.Parsing.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- Basic Metadata -->
+        <Title>Semantic Versioning for .NET</Title>
+        <AssemblyName>McSherry.SemanticVersioning</AssemblyName>
+        <RootNamespace>McSherry.SemanticVersioning</RootNamespace>
+        <Version>1.3.0-pre</Version>
+        <PackageId>McSherry.SemanticVersioning</PackageId>
+        <Authors>Liam McSherry</Authors>
+        <Copyright>2015-17 (c) Liam McSherry</Copyright>
+        <PackageProjectUrl>https://github.com/McSherry/McSherry.SemanticVersioning</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/McSherry/McSherry.SemanticVersioning/blob/v1.2.0/LICENCE.txt</PackageLicenseUrl>
+        <Description>An easy-to-use library for supporting Semantic Versioning (v2.0.0) and Monotonic Versioning (v1.2).</Description>
+        
+        <!-- Build-related information -->
+        <TargetFrameworks>net45;net46;netstandard1.0</TargetFrameworks>
+        <OutputType>Library</OutputType>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
+    
+    <!-- .NET 4.5 -->
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+        
+    </ItemGroup>
+    
+    <!-- .NET 4.6 -->
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+        
+    </ItemGroup>
+    
+    <!-- .NET Standard 1.0 -->
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
+        <PackageReference Include="System.Runtime" Version="4.3.0" />
+        <PackageReference Include="System.Linq" Version="4.3.0" />
+        <PackageReference Include="System.Collections" Version="4.3.0" />
+        <PackageReference Include="System.ObjectModel" Version="4.3.0" />
+    </ItemGroup>
+    <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
+        <!-- 
+            The library uses a number of methods/objects not provided
+            by .NET Standard, and defining this constant compiles in
+            replacements that allow the library to work.
+        -->
+        <DefineConstants>USE_SHIMS</DefineConstants>
+    </PropertyGroup>
 </Project>

@@ -23,6 +23,7 @@ using System.Linq;
 using System.Text;
 
 using McSherry.SemanticVersioning.Internals;
+using McSherry.SemanticVersioning.Internals.Shims;
 
 namespace McSherry.SemanticVersioning
 {

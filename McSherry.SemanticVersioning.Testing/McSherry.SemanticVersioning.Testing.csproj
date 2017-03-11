@@ -74,13 +74,13 @@
     <Compile Include="TestingExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\McSherry.SemanticVersioning\McSherry.SemanticVersioning.csproj">
       <Project>{8c0fd5fe-7c51-45c7-a6b6-7d73fa74588f}</Project>
       <Name>McSherry.SemanticVersioning</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

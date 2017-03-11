@@ -26,9 +26,9 @@ using CLSCompliantAttribute = System.CLSCompliantAttribute;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Semantic Versioning for .NET")]
-[assembly: AssemblyProduct("Semantic Versioning for .NET")]
-[assembly: AssemblyCopyright("Copyright 2015-16 © Liam McSherry")]
+//[assembly: AssemblyTitle("Semantic Versioning for .NET")]
+//[assembly: AssemblyProduct("Semantic Versioning for .NET")]
+//[assembly: AssemblyCopyright("Copyright 2015-16 © Liam McSherry")]
 [assembly: AssemblyCulture("")]
 [assembly: InternalsVisibleTo("McSherry.SemanticVersioning.Testing")]
 [assembly: CLSCompliant(true)]
@@ -47,5 +47,5 @@ using CLSCompliantAttribute = System.CLSCompliantAttribute;
 //                                  v1.0.0, but you should be able to use v1.0.1 or
 //                                  v1.0.2 without needing to recompile).
 //
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyInformationalVersion("1.2.0")]
+//[assembly: AssemblyVersion("1.2.0.0")]
+//[assembly: AssemblyInformationalVersion("1.2.0")]

@@ -23,6 +23,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using McSherry.SemanticVersioning.Internals.Shims;
+
 namespace McSherry.SemanticVersioning
 {
     /// <summary>
@@ -68,7 +70,7 @@ namespace McSherry.SemanticVersioning
             //
             // We have to check the length is greater than [1] because a
             // single ['0'] character as an identifier is valid.
-            if (identifier.Length > 1 && identifier.First() == '0' &&
+            if (identifier.Length > 1 && identifier[0] == '0' &&
                 identifier.All(IsNumber))
                 return false;
 
