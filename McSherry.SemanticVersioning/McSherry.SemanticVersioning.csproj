@@ -14,7 +14,12 @@
         <Description>An easy-to-use library for supporting Semantic Versioning (v2.0.0) and Monotonic Versioning (v1.2).</Description>
         
         <!-- Build-related information -->
-        <TargetFrameworks>net45;net46;netstandard1.0</TargetFrameworks>
+        <TargetFrameworks>
+            net45;
+            net46;
+            netstandard1.0;
+            netcoreapp1.0
+        </TargetFrameworks>
         <OutputType>Library</OutputType>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -33,10 +38,7 @@
     
     <!-- .NET Standard 1.0 -->
     <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
-        <PackageReference Include="System.Runtime" Version="4.3.0" />
-        <PackageReference Include="System.Linq" Version="4.3.0" />
-        <PackageReference Include="System.Collections" Version="4.3.0" />
-        <PackageReference Include="System.ObjectModel" Version="4.3.0" />
+    
     </ItemGroup>
     <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' ">
         <!-- 
@@ -44,6 +46,14 @@
             by .NET Standard, and defining this constant compiles in
             replacements that allow the library to work.
         -->
+        <DefineConstants>USE_SHIMS</DefineConstants>
+    </PropertyGroup>
+    
+    <!-- .NET Core 1.0 -->
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+    
+    </ItemGroup>
+    <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0'">
         <DefineConstants>USE_SHIMS</DefineConstants>
     </PropertyGroup>
 </Project>
