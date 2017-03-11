@@ -670,7 +670,8 @@ namespace McSherry.SemanticVersioning.Ranges
                 // We're using [Nullable<char>]s so we can put a null value at the
                 // end of the string to make it easy to detect the last character
                 // in the string.
-                var chars = rangeString.Select(c => new Nullable<char>(c))
+                var chars = rangeString.ToCharArray()
+                                       .Select(c => new Nullable<char>(c))
                                        .Concat(new Nullable<char>[] { null });
 
                 var state = State.Start;

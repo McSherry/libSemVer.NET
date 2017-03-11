@@ -968,8 +968,10 @@ namespace McSherry.SemanticVersioning
 
                 // We know that the items are different, so the first thing we
                 // test for is whether the items are numeric.
-                bool thisIsNumber = prEnumThis.Current.All(Helper.IsNumber),
-                     thatIsNumber = prEnumThat.Current.All(Helper.IsNumber);
+                bool thisIsNumber = prEnumThis.Current.ToCharArray()
+                                                      .All(Helper.IsNumber),
+                     thatIsNumber = prEnumThat.Current.ToCharArray()
+                                                      .All(Helper.IsNumber);
 
                 // If both identifiers are numeric, then we perform a numeric
                 // comparison of them.

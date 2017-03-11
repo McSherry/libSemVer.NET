@@ -110,8 +110,8 @@ namespace McSherry.SemanticVersioning.Internals
             }
 
             // The strings must only contain numeric characters (0..9).
-            if (subject.Any(c => c < '0' || c > '9') ||
-                against.Any(c => c < '0' || c > '9'))
+            if (subject.ToCharArray().Any(c => c < '0' || c > '9') ||
+                against.ToCharArray().Any(c => c < '0' || c > '9'))
             {
                 throw new FormatException(
                     "A numeric string may only contain the characters 0 to 9."

@@ -570,7 +570,8 @@ namespace McSherry.SemanticVersioning
                 //
                 // Instead of having some duplicate code outside of the
                 // loop, we can now detect null as appropriate.
-                var chars = new List<char?>(input.Select(c => (char?)c));
+                var chars = new List<char?>(input.ToCharArray()
+                                                 .Select(c => (char?)c));
                 chars.Add(null);
 
                 // Negative values will cause an exception if we pass them
