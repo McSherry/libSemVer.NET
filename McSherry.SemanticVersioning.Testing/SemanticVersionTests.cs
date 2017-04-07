@@ -21,8 +21,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-//using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+#if NETFW
+using System.Runtime.Serialization.Formatters.Binary;
+#endif
 
 using static System.Linq.Enumerable;
 
@@ -151,7 +154,7 @@ namespace McSherry.SemanticVersioning
             var sv5 = new SemanticVersion(1, 3, 1, new[] { "rc", "1" },
                                                    new[] { "20150925", "1" });
 
-            #region ToString(void)
+#region ToString(void)
             // First, we're going to test the "standard" [ToString]
             // method accepting no arguments. This should produce
             // strings formatted as given in the Semantic Versioning
@@ -168,8 +171,8 @@ namespace McSherry.SemanticVersioning
                             "ToString() failure (4).");
             Assert.AreEqual("1.3.1-rc.1+20150925.1", sv5.ToString(), 
                             "ToString() failure (5).");
-            #endregion
-            #region ToString(string, IFormatProvider) + ToString(string)
+#endregion
+#region ToString(string, IFormatProvider) + ToString(string)
             // Next, we're going to test the result of each format specifier
             // given to the [IFormattable] implementation of [ToString].
             //
@@ -183,7 +186,7 @@ namespace McSherry.SemanticVersioning
             var if4 = (IFormattable)sv4;
             var if5 = (IFormattable)sv5;
 
-            #region Format Specifier: "G"
+#region Format Specifier: "G"
             // First up is the "G" specifier, which should produce the same
             // result as normal [ToString].
             Assert.AreEqual(sv0.ToString(), if0.ToString("G", null), 
@@ -212,8 +215,8 @@ namespace McSherry.SemanticVersioning
                             "Format specifier 'G' failure (10).");
             Assert.AreEqual(sv5.ToString("G"), if5.ToString("G", null),
                             "Format specifier 'G' failure (11).");
-            #endregion
-            #region Format Specifier: "g"
+#endregion
+#region Format Specifier: "g"
             // The "g" specifier is like "G", but the output is prefixed
             // with a "v".
             Assert.AreEqual("v" + sv0.ToString(), if0.ToString("g", null),
@@ -241,8 +244,8 @@ namespace McSherry.SemanticVersioning
                             "Format specifier 'g' failure (10).");
             Assert.AreEqual(sv5.ToString("g"), if5.ToString("g", null),
                             "Format specifier 'g' failure (11).");
-            #endregion
-            #region Format Specifier: null
+#endregion
+#region Format Specifier: null
             // The null specifier must produce the same result as "G".
             Assert.AreEqual(sv0.ToString(), if0.ToString(null, null),
                             "Format specifier null failure (0).");
@@ -269,8 +272,8 @@ namespace McSherry.SemanticVersioning
                             "Format specifier null failure (10).");
             Assert.AreEqual(sv5.ToString(null), if5.ToString(null, null),
                             "Format specifier null failure (11).");
-            #endregion
-            #region Format Specifier: "C"
+#endregion
+#region Format Specifier: "C"
             // The "C" specifier gives us the concise format, where some
             // information may be omitted.
             Assert.AreEqual("1.0", if0.ToString("C", null),
@@ -298,8 +301,8 @@ namespace McSherry.SemanticVersioning
                             "Format specifier 'C' failure (10).");
             Assert.AreEqual(sv5.ToString("C"), if5.ToString("C", null),
                             "Format specifier 'C' failure (11).");
-            #endregion
-            #region Format Specifier: "c"
+#endregion
+#region Format Specifier: "c"
             // The "c" specifier gives us the same output as "C", but
             // prefixed with the letter "v".
             Assert.AreEqual("v1.0", if0.ToString("c", null),
@@ -327,9 +330,9 @@ namespace McSherry.SemanticVersioning
                             "Format specifier 'c' failure (10).");
             Assert.AreEqual(sv5.ToString("c"), if5.ToString("c", null),
                             "Format specifier 'c' failure (11).");
-            #endregion
+#endregion
 
-            #endregion
+#endregion
 
             // New tests will need to be added here for any new format specifiers.
         }
@@ -426,7 +429,7 @@ namespace McSherry.SemanticVersioning
             // available with something we know is valid and test the values
             // of the [SemanticVersion]'s properties afterwards.
 
-            #region (int, int) 0-4
+#region (int, int) 0-4
             {
                 var sv = new SemanticVersion(1, 6);
 
@@ -439,8 +442,8 @@ namespace McSherry.SemanticVersioning
                 Assert.IsTrue(sv.Metadata.SequenceEqual(Empty<string>()),
                               "Incorrect initialisation (4).");
             }
-            #endregion
-            #region (int, int, int) 5-9
+#endregion
+#region (int, int, int) 5-9
             {
                 var sv = new SemanticVersion(1, 2, 8);
                 
@@ -453,8 +456,8 @@ namespace McSherry.SemanticVersioning
                 Assert.IsTrue(sv.Metadata.SequenceEqual(Empty<string>()),
                               "Incorrect initialisation (9).");
             }
-            #endregion
-            #region (int, int, int, IEnumerable<string> 10-14
+#endregion
+#region (int, int, int, IEnumerable<string> 10-14
             {
                 var sv = new SemanticVersion(2, 5, 6, new[] { "rc" });
                 
@@ -467,8 +470,8 @@ namespace McSherry.SemanticVersioning
                 Assert.IsTrue(sv.Metadata.SequenceEqual(Empty<string>()),
                               "Incorrect initialisation (14).");
             }
-            #endregion
-            #region (int, int, int, IEnumerable<string>, IEnumerable<string>)
+#endregion
+#region (int, int, int, IEnumerable<string>, IEnumerable<string>)
             {
                 var sv = new SemanticVersion(5, 1, 2, new[] { "rc" }, 
                                                       new[] { "2015" });
@@ -482,9 +485,10 @@ namespace McSherry.SemanticVersioning
                 Assert.IsTrue(sv.Metadata.SequenceEqual(new[] { "2015" }),
                               "Incorrect initialisation (19).");
             }
-            #endregion
-        }        
-        
+#endregion
+        }
+
+#if NETFW
         /// <summary>
         /// <para>
         /// Tests that the binary serialisation and deserialisation of 
@@ -492,38 +496,39 @@ namespace McSherry.SemanticVersioning
         /// as expected.
         /// </para>
         /// </summary>
-        //[TestMethod, TestCategory(Category)]
-        //public void BinarySerialisation()
-        //{
-        //    var serialiser = new BinaryFormatter();
-        //    var stream = new MemoryStream();
+        [TestMethod, TestCategory(Category)]
+        public void BinarySerialisation()
+        {
+            var serialiser = new BinaryFormatter();
+            var stream = new MemoryStream();
 
-        //    // We want to make sure everything is serialised properly,
-        //    // so we're going to need a version with all the bells and
-        //    // whistles.
-        //    var sv = SemanticVersion.Parse("1.5.6-rc.1+2015.10.18");
+            // We want to make sure everything is serialised properly,
+            // so we're going to need a version with all the bells and
+            // whistles.
+            var sv = SemanticVersion.Parse("1.5.6-rc.1+2015.10.18");
 
-        //    // Serialise the version, then seek the stream back to the
-        //    // start so we can deserialise it.
-        //    serialiser.Serialize(stream, sv);
-        //    stream.Seek(0, SeekOrigin.Begin);
+            // Serialise the version, then seek the stream back to the
+            // start so we can deserialise it.
+            serialiser.Serialize(stream, sv);
+            stream.Seek(0, SeekOrigin.Begin);
 
-        //    // Time to cross your fingers.
-        //    var deser_sv = serialiser.Deserialize(stream) as SemanticVersion;
+            // Time to cross your fingers.
+            var deser_sv = serialiser.Deserialize(stream) as SemanticVersion;
 
-        //    Assert.IsNotNull(deser_sv, "Did not deserialise correctly.");
+            Assert.IsNotNull(deser_sv, "Did not deserialise correctly.");
 
-        //    Assert.AreEqual(sv.Major, deser_sv.Major,
-        //                    "Major versions did not match.");
-        //    Assert.AreEqual(sv.Minor, deser_sv.Minor,
-        //                    "Minor versions did not match.");
-        //    Assert.AreEqual(sv.Patch, deser_sv.Patch,
-        //                    "Patch versions did not match.");
-        //    Assert.IsTrue(sv.Identifiers.SequenceEqual(deser_sv.Identifiers),
-        //                  "Pre-release identifiers did not match.");
-        //    Assert.IsTrue(sv.Metadata.SequenceEqual(deser_sv.Metadata),
-        //                  "Build metadata items did not match.");
-        //}
+            Assert.AreEqual(sv.Major, deser_sv.Major,
+                            "Major versions did not match.");
+            Assert.AreEqual(sv.Minor, deser_sv.Minor,
+                            "Minor versions did not match.");
+            Assert.AreEqual(sv.Patch, deser_sv.Patch,
+                            "Patch versions did not match.");
+            Assert.IsTrue(sv.Identifiers.SequenceEqual(deser_sv.Identifiers),
+                          "Pre-release identifiers did not match.");
+            Assert.IsTrue(sv.Metadata.SequenceEqual(deser_sv.Metadata),
+                          "Build metadata items did not match.");
+        }
+#endif
 
         /// <summary>
         /// <para>
@@ -538,7 +543,7 @@ namespace McSherry.SemanticVersioning
             Assert.IsTrue(sv is IComparable<SemanticVersion>,
                           "SemanticVersion is not IComparable < SemanticVersion >.");
 
-            #region Definitions
+#region Definitions
             var cmp = new SemanticVersion[]
             {
                 null,
@@ -591,9 +596,9 @@ namespace McSherry.SemanticVersioning
                                     identifiers:    Empty<string>(),
                                     metadata:       Empty<string>()),
             };
-            #endregion
+#endregion
 
-            #region CompareTo
+#region CompareTo
             // Test the [CompareTo] method.
             Assert.AreEqual(Ordering.Greater,
                             cmp[1].CompareTo<SemanticVersion>(cmp[0]),
@@ -627,8 +632,8 @@ namespace McSherry.SemanticVersioning
             Assert.AreEqual(cmp[1].CompareTo(cmp[2]),
                             -cmp[2].CompareTo(cmp[1]),
                             "Comparison failed (10).");
-            #endregion
-            #region Sorting
+#endregion
+#region Sorting
             // To be extra sure, stick them in a collection, sort it, and
             // check the order they come out of the collection in. We jumble
             // up the items by ordering them using a newly-generated GUID.
@@ -637,8 +642,8 @@ namespace McSherry.SemanticVersioning
 
             // [cmp] is already in the correct lowest-to-highest order.
             Assert.IsTrue(sl.SequenceEqual(cmp), "Comparison failed (8).");
-            #endregion
-            #region Operators > and <
+#endregion
+#region Operators > and <
             // Now we have to do practically the same tests again, but this time
             // testing the comparison operators rather than the [CompareTo]
             // method.
@@ -668,8 +673,8 @@ namespace McSherry.SemanticVersioning
                           "Operator comparison failed (18).");
             Assert.IsTrue((cmp[1] < cmp[2]) == !(cmp[2] < cmp[1]),
                           "Operator comparison failed (19).");
-            #endregion
-            #region Operators >= and <=
+#endregion
+#region Operators >= and <=
             // We're also testing the [>=] and [<=] operators.
             Assert.IsTrue(cmp[8] >= cmp[8], "Operator comparison failed (20).");
             Assert.IsTrue(cmp[8] >= cmp[7], "Operator comparison failed (21).");
@@ -693,7 +698,7 @@ namespace McSherry.SemanticVersioning
 
             Assert.IsFalse(cmp[1] <= cmp[0], "Operator comparison failed (38).");
             Assert.IsFalse(cmp[0] >= cmp[1], "Operator comparison failed (39).");
-            #endregion
+#endregion
         }
         /// <summary>
         /// <para>
@@ -813,7 +818,7 @@ namespace McSherry.SemanticVersioning
             // Backwards-compatibility determination is not commutative,
             // so a few of these tests will just be reversed parameters.
 
-            #region "Always False" checks (numbers 0 to 10)
+#region "Always False" checks (numbers 0 to 10)
             {
                 // First thing we're going to do is a basic test of the "always
                 // false" conditions listed in the remarks for [CompatibleWith].
@@ -860,8 +865,8 @@ namespace McSherry.SemanticVersioning
                 Assert.IsFalse(af_sv3.CompatibleWith(af_sv4),
                                "Incorrect compatibility (10).");
             }
-            #endregion
-            #region Pre-release Versions (numbers 11 to 22)
+#endregion
+#region Pre-release Versions (numbers 11 to 22)
             {
                 // Pre-release versions are a bit more difficult with
                 // their compatibility. See [CompatibleWith] remarks
@@ -916,8 +921,8 @@ namespace McSherry.SemanticVersioning
                                "Incorrect compatibility (22).");
 
             }
-            #endregion
-            #region Regular checks (numbers 23 to 30)
+#endregion
+#region Regular checks (numbers 23 to 30)
             {
                 var sv0 = new SemanticVersion(1, 0, 0);
                 var sv1 = new SemanticVersion(1, 1, 0);
@@ -945,7 +950,7 @@ namespace McSherry.SemanticVersioning
                 Assert.IsFalse(sv1.CompatibleWith(sv3),
                                "Incorrect compatibility (30).");
             }
-            #endregion
+#endregion
         }
     }
 }
