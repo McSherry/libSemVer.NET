@@ -90,9 +90,7 @@ namespace McSherry.SemanticVersioning.Ranges
             // to our [Comparator] class, which will provide us with an
             // [IComparator] instance we can use.
             return parseResult.ComparatorSets.Select(
-                tokenSet => tokenSet.Select(
-                    token => Comparator.Create(token)
-                    )
+                tokenSet => tokenSet.Select(token => Comparator.Create(token))
                 );
         }
 
@@ -232,9 +230,7 @@ namespace McSherry.SemanticVersioning.Ranges
                 // Each comparator set has a number of comparators in it,
                 // and for a comparator set to be satisfied all of the
                 // comparators in that set must be satisfied.
-                set => set.All(
-                    cmp => cmp.SatisfiedBy(semver)
-                    )
+                set => set.All(cmp => cmp.SatisfiedBy(semver))
                 );
 
             // We know whether it matches or not now, so we add it to the

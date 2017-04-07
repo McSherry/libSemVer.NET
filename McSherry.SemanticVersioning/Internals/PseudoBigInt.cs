@@ -76,8 +76,6 @@ namespace McSherry.SemanticVersioning.Internals
                     );
             }
 
-            
-
             if (against == null)
             {
                 throw new ArgumentNullException(

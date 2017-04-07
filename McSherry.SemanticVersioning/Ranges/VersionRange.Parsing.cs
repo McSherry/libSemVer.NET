@@ -1014,7 +1014,9 @@ namespace McSherry.SemanticVersioning.Ranges
             }
 
             /// <summary>
+            /// <para>
             /// Implements <see cref="VersionRange"/> parsing.
+            /// </para>
             /// </summary>
             /// <param name="rangeString">
             /// The string representing the version range to be parsed.
@@ -1094,9 +1096,7 @@ namespace McSherry.SemanticVersioning.Ranges
             // tokens we were given for [IComparator] instances that we can
             // pass to a constructor.
             var comparators = parseResult.ComparatorSets.Select(
-                tokenSet => tokenSet.Select(
-                    token => Comparator.Create(token)
-                    )
+                tokenSet => tokenSet.Select(token => Comparator.Create(token))
                 );
 
             result = new VersionRange(comparators);

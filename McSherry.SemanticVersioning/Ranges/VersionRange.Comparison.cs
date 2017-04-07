@@ -112,6 +112,7 @@ namespace McSherry.SemanticVersioning.Ranges
                 // items are ignored.
                 return arg.EquivalentTo(comparator);
             }
+
             private static bool OpLess(SemanticVersion arg,
                                        SemanticVersion comparator)
             {
@@ -170,7 +171,8 @@ namespace McSherry.SemanticVersioning.Ranges
 
                 return arg < comparator;
             }
-            private static bool OpGreater(SemanticVersion arg,
+
+            private static bool OpGreater(SemanticVersion arg, 
                                           SemanticVersion comparator)
             {
                 // This function is going to be mostly the same as [OpLess], just
@@ -191,11 +193,13 @@ namespace McSherry.SemanticVersioning.Ranges
 
                 return arg > comparator;
             }
+
             private static bool OpLTEQ(SemanticVersion arg,
                                        SemanticVersion comparator)
             {
                 return OpEqual(arg, comparator) || OpLess(arg, comparator);
             }
+
             private static bool OpGTEQ(SemanticVersion arg,
                                        SemanticVersion comparator)
             {
@@ -235,12 +239,11 @@ namespace McSherry.SemanticVersioning.Ranges
             /// </exception>
             public static IComparator Create(ComparatorToken cmp)
             {
-                ComparatorImpl cmpImpl;
-                if (!Comparers.TryGetValue(cmp.Operator, out cmpImpl))
+                if (!Comparers.TryGetValue(cmp.Operator, out var cmpImpl))
                 {
                     throw new ArgumentException(
-                        message:    "Unrecognised operator.",
-                        paramName:  nameof(cmp));
+                        message: "Unrecognised operator.",
+                        paramName: nameof(cmp));
                 }
 
                 return new Comparator(sv => cmpImpl(sv, cmp.Version));

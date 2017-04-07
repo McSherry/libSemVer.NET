@@ -30,6 +30,7 @@ namespace McSherry.SemanticVersioning.Internals.Shims
     [AttributeUsage(AttributeTargets.All)]
     internal sealed class SerializableAttribute : Attribute
     {
+
     }
 #endif
 }

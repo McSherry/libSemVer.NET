@@ -20,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using McSherry.SemanticVersioning.Internals;
 using McSherry.SemanticVersioning.Internals.Shims;
@@ -69,7 +68,7 @@ namespace McSherry.SemanticVersioning
     [Serializable]
     [CLSCompliant(true)]
     public sealed partial class SemanticVersion
-        : IEquatable<SemanticVersion>, IComparable<SemanticVersion>,
+        : IEquatable<SemanticVersion>, IComparable<SemanticVersion>, 
           IFormattable
     {
         private const int CompareTo_Greater =  1,

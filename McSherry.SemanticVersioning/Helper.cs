@@ -23,8 +23,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using McSherry.SemanticVersioning.Internals.Shims;
-
 namespace McSherry.SemanticVersioning
 {
     /// <summary>
