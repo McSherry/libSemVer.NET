@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015-19 Liam McSherry
+﻿// Copyright (c) 2015-20 Liam McSherry
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -264,6 +264,21 @@ namespace McSherry.SemanticVersioning
                     );
             }
         }
+
+
+        /// <summary>
+        /// The highest-precedence <see cref="SemanticVersion"/> that can be
+        /// represented. This field is read-only.
+        /// </summary>
+        public static readonly SemanticVersion MaxValue 
+            = new SemanticVersion(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue);
+        /// <summary>
+        /// The lowest-precedence <see cref="SemanticVersion"/> that can be
+        /// represented. This field is read-only.
+        /// </summary>
+        public static readonly SemanticVersion MinValue 
+            = new SemanticVersion(0, 0, 0, new[] { "0" }); // 0.0.0-0
+
 
         private readonly int _major, _minor, _patch;
         private readonly List<string> _prIds, _metadata;

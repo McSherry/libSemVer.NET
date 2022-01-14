@@ -43,6 +43,16 @@ inherited.
 [7]: /docs/docs/McSherry.SemanticVersion/SemanticVersion/
 [8]: /docs/docs/McSherry.SemanticVersion/SemanticVersion/Patch.md
 
+## Static Fields
+
+- [**MaxValue**][8A]  
+  The highest-precedence SemanticVersion that can be represented. This field is read-only.
+- [**MinValue**][8B]  
+  The lowest-precedence SemanticVersion that can be represented. This field is read-only.
+
+[8A]: ./MaxValue.md
+[8B]: ./MinValue.md
+
 
 ## Instance Properties
 

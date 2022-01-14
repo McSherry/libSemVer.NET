@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015-19 Liam McSherry
+﻿// Copyright (c) 2015-20 Liam McSherry
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Runtime.CompilerServices;
 using McSherry.SemanticVersioning.Internals.Shims;
 
 namespace McSherry.SemanticVersioning.Ranges
@@ -76,7 +76,7 @@ namespace McSherry.SemanticVersioning.Ranges
     [Serializable]
     [CLSCompliant(true)]
     public sealed partial class VersionRange
-        : VersionRange.IComparator
+        : VersionRange.IComparator, IComparable<SemanticVersion>
     {
         // Used as a passthrough method so that the constructor taking a string
         // argument can use constructor chaining to avoid duplicate code.
@@ -299,6 +299,122 @@ namespace McSherry.SemanticVersioning.Ranges
         {
             return semvers.All(this.SatisfiedBy);
         }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="SemanticVersion"/> is
+        /// outside the bounds of the current version range.
+        /// </summary>
+        /// <param name="semver">
+        /// The <see cref="SemanticVersion"/> to compare to the current version
+        /// range.
+        /// </param>
+        /// <returns>
+        /// <para>
+        /// If <paramref name="semver"/> has higher precedence than all versions
+        /// that satisfy the current version range, an integer greater than zero.
+        /// </para>
+        /// <para>
+        /// If <paramref name="semver"/> has lower precedence than all versions
+        /// that satisfy the current version range, an integer less than zero.
+        /// </para>
+        /// <para>
+        /// If <paramref name="semver"/> satisfies the current version range, if it
+        /// is neither greater than nor less than all versions that satisfy the
+        /// current version range, or if it is <see langword="null"/>, zero.
+        /// </para>
+        /// </returns>
+        public int CompareTo(SemanticVersion semver)
+        {
+            //const int GREATER = +1;
+            const int EQUAL   =  0;
+            //const int LESSER  = -1;
+
+            // To determine relative precedence, we have to determine whether
+            // the provided version is either greater or less than all versions
+            // that the current range accepts.
+            //
+            // To start with, we know that neither can be true if any of the
+            // comparator sets we have is satisfied by the current version, as
+            // that means it falls within their range.
+            if (_comparators.Any(set => set.All(cmp => cmp.SatisfiedBy(semver))))
+                return EQUAL;
+
+            // Once we know that none of the comparator sets are satisfied, we
+            // need to verify that the version is greater or lesser than all of
+            // the sets individually, with the same relation for all sets. 
+            //
+            // Version ranges can be noncontiguous, e.g. '>1.7 <1.8 || 2.0.0' is
+            // not satisfied by 'v1.9.2', but it clearly isn't greater than the
+            // maximum the range matches (which is '2.0.0') and nor is it less
+            // than the minimum version matched by the range ('1.7.1'). If the
+            // result--greater or lesser--is the same for all sets, then we know
+            // it doesn't fall into a gap in a noncontiguous range.
+            //
+            // As we do for comparators in each set, here we take the first set
+            // as a seed and verify that all others match.
+            var setSeed = CompareToSet(_comparators.First());
+
+            // And, in the same manner as for comparators, if all the results
+            // match we're able to return the seed.
+            if (_comparators.Skip(1).All(set => CompareToSet(set) == setSeed))
+                return setSeed;
+            // And if they don't, it's neither greater nor lesser than the range.
+            else
+                return EQUAL;
+
+
+            int CompareToSet(IEnumerable<IComparator> set)
+            {
+                // A set will likely have multiple comparators setting its bounds,
+                // which means that some comparators will match. If all comparators
+                // but one matches, we can use the mismatch as our final result.
+                var lastMismatch = 0;
+
+                foreach (var cmp in set)
+                {
+                    var curr = cmp.CompareTo(semver);
+
+                    // If we haven't yet found a mismatch, then we can store it
+                    // and carry on until we run out of comparators or find another.
+                    if (lastMismatch == 0)
+                    {
+                        lastMismatch = curr;
+                    }
+                    // If we have found a mismatch but the current comparison is a
+                    // satisfaction, there's no conflict and we can carry on.
+                    //
+                    // Alternatively, a mismatch of the same type could indicate a
+                    // meaningless but still valid range (e.g. '<1.1 <1.2' would
+                    // produce two 'greater than' results for '1.3').
+                    else if (curr == 0 || lastMismatch == curr)
+                    {
+                        continue;
+                    }
+                    // However, if we've found a mismatch of a different type, we
+                    // have a noncontiguous range where the provided version falls
+                    // within one of the range's gaps.
+                    else
+                    {
+                        return EQUAL;
+                    }
+                }
+
+                return lastMismatch;
+
+                // We take the first comparator in the set as a seed, and we'll
+                // compare all subsequent comparators against this. It doesn't
+                // matter which we start with, this is just easiest.
+                //var cmpSeed = set.First().CompareTo(semver);
+
+                //// If all subsequent comparators match, we can return the seed.
+                //if (set.Skip(1).All(cmp => cmp.CompareTo(semver) == cmpSeed))
+                //    return cmpSeed;
+                //// Otherwise, we have to indicate it's neither greater nor lesser.
+                //else
+                //    return EQUAL;
+            }
+        }
+
 
         bool IComparator.ComparableTo(SemanticVersion comparand)
         {

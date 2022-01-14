@@ -3,7 +3,7 @@
 ```c#
 [Serializable]
 [CLSCompliant(true)]
-public sealed class VersionRange
+public sealed class VersionRange : IComparable<SemanticVersion>
 ```
 
 **Namespace:** [`McSherry.SemanticVersioning.Ranges`][1]  
@@ -42,10 +42,12 @@ inherited.
 - **[SatisfiedBy(SemanticVersion[])][5]**  
   Determines whether the current range is satisfied by all
   specified [SemanticVersion][4] instances.
-  
+- **[`IComparable<SemanticVersion>` CompareTo(SemanticVersion)][5A]**  
+  Determines whether the specified [SemanticVersion][4] is outside the bounds of the current version range.
 [3]: ./SatisfiedBy(SemanticVersion).md
 [4]: ../SemanticVersion
 [5]: ./SatisfiedBy(SemanticVersion).md
+[5A]:./CompareTo(SemanticVersion).md
 
 
 ## Static Methods
