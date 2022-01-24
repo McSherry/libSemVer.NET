@@ -18,6 +18,7 @@
         
         <!-- Build-related information -->
         <TargetFrameworks>
+            net35;
             net45;
             net46;
             netstandard1.0;
